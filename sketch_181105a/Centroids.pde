@@ -63,38 +63,25 @@ class Centroids{
   
   public int inRange(color c)
   {
-    
+    int minIndex = -1;
+    float minDist = Float.MAX_VALUE;
     for(int i = 0; i < k; i++)
     {
-      if(red(c) >= getRange(red(this.centroids[k]))[0] && red(c) <= getRange(red(this.centroids[k]))[1] && 
-         green(c) >= getRange(green(this.centroids[k]))[0] && green(c) <= getRange(green(this.centroids[k]))[1] && 
-         blue(c) >= getRange(blue(this.centroids[k]))[0] && blue(c) <= getRange(blue(this.centroids[k]))[1])
+      float dist = sqrt(getDistance(this.centroids[i], c));
+      if(p)
       {
-        return k;
+        println("dist:", dist);
+        print("color: ");
+        printColor(this.centroids[i]);
+        printColor(c);
+        p = false;
+      }
+      if(dist <= colorRange && dist < minDist)
+      {
+          minDist = dist;
+          minIndex = i;
       }
     }
-    return -1;
-  }
-  
-  private float[] getRange(float n)
-  {
-    float[] range = new float[2];
-    if(n - colorRange < 0)
-    {
-      range[0] = 0;
-    }
-    else
-    {
-      range[0] = n - colorRange;
-    }
-    if(n - colorRange > 255)
-    {
-      range[1] = 255;
-    }
-    else
-    {
-      range[1] = n + colorRange;
-    }
-    return range;
+    return minIndex;
   }
 }

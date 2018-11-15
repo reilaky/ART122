@@ -104,3 +104,7 @@ color convertStr2C(String s){
 String convertC2Str(color c){
   return Float.toString(red(c)) + " " + Float.toString(green(c)) + " " + Float.toString(blue(c));
 }
+void printColor(color c)
+{
+  println("RGB: ", red(c), green(c), blue(c));
+}
