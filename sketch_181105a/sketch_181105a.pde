@@ -13,13 +13,15 @@ Centroids centroids;
 int k = 4;
 int numPixel;
 int KmeansItr = 5;
-int slidingWindowMin = 10;
-int slidingWindowMax = 30;
-int colorRange = 10;
-float threshold = 0.8;
+int slidingWindowMin = 20;
+int slidingWindowMax = 100;
+int hueRange = 15;
+int range = 50;
+float threshold = 0.6;
 float[] maxRatio;
 int[] prev;
 int[] currSum;
+float[][] hsv;
 Rec[] contours;
 boolean p = true;
 PrintWriter output;
@@ -32,11 +34,11 @@ void setup() {
   //cam.setMaximumDistance(5000);
   //video = new Capture(this, width, height);
   //video.start();
-  img = loadImage("1.jpg");
+  img = loadImage("3.png");
   img.resize(width, height);
   img.loadPixels();
   
-  snapshot = loadImage("3.png");
+  snapshot = loadImage("1.jpg");
   snapshot.resize(width, height);
   snapshot.loadPixels();
   
@@ -68,9 +70,14 @@ void setup() {
   currSum = new int[k];
   contours = new Rec[k];
   maxRatio = new float[k];
+  hsv = new float[k][3];
   for (int i = 0; i < k; i++)
   {
     contours[i] = new Rec();
+    hsv[i][0] = hue(centroids.centroids[i]);
+    hsv[i][1] = saturation(centroids.centroids[i]);
+    hsv[i][2] = brightness(centroids.centroids[i]);
+    println(hsv[i][0], hsv[i][1], hsv[i][2]);
   }
   int m1 = millis();
   colorDetection();
@@ -86,8 +93,12 @@ void draw() {
 
   background(0);
   //visualizeKmeans();
-  image(snapshot, 0, 0);
-  
+   image(snapshot, 0, 0);
+  //if(millis() % 3000 == 0)
+  //{
+  //  video.loadPixels();
+  //  colorDetection();
+  //}
   strokeWeight(2);
   noFill();
   for (int i = 0; i < k; i++)
@@ -101,11 +112,7 @@ void draw() {
     fill(centroids.centroids[i]);
     rect(i * 10 + width/2, 0 + height/2, 10, 10);
   }
-  //if(millis() % 3000 == 0)
-  //{
-  //  video.loadPixels();
-  //  colorDetection();
-  //}
+
 }
 
 //void captureEvent(Capture video)

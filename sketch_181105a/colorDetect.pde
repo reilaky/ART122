@@ -1,7 +1,7 @@
 void colorDetection()
 {
   output.println("Color Detection");
-  for(int sw = slidingWindowMin; sw <= slidingWindowMax; sw += 5 )
+  for(int sw = slidingWindowMin; sw <= slidingWindowMax; sw += 80 )
   {
     
     output.println("sw = " + sw);

@@ -64,24 +64,39 @@ class Centroids{
   public int inRange(color c)
   {
     int minIndex = -1;
-    float minDist = Float.MAX_VALUE;
     for(int i = 0; i < k; i++)
     {
-      float dist = sqrt(getDistance(this.centroids[i], c));
-      if(p)
+      if(abs(hue(c) - hsv[i][0]) < hueRange
+         && abs(saturation(c) - hsv[i][1]) < range
+         && abs(brightness(c) - hsv[i][2]) < range)
       {
-        println("dist:", dist);
-        print("color: ");
-        printColor(this.centroids[i]);
-        printColor(c);
-        p = false;
-      }
-      if(dist <= colorRange && dist < minDist)
-      {
-          minDist = dist;
-          minIndex = i;
+         minIndex = i;
       }
     }
     return minIndex;
   }
+  
+  //public int inRange(color c)
+  //{
+  //  int minIndex = -1;
+  //  float minDist = Float.MAX_VALUE;
+  //  for(int i = 0; i < k; i++)
+  //  {
+  //    float dist = sqrt(getDistance(this.centroids[i], c));
+  //    if(p)
+  //    {
+  //      println("dist:", dist);
+  //      print("color: ");
+  //      printColor(this.centroids[i]);
+  //      printColor(c);
+  //      p = false;
+  //    }
+  //    if(dist <= colorRange && dist < minDist)
+  //    {
+  //        minDist = dist;
+  //        minIndex = i;
+  //    }
+  //  }
+  //  return minIndex;
+  //}
 }
