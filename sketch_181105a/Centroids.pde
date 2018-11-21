@@ -44,7 +44,7 @@ class Centroids{
     println("min error: ", this.assement);
     for(int i = 0; i < k; i++)
     {
-      println("RGB: ", red(this.centroids[i]), green(this.centroids[i]), blue(this.centroids[i]));
+      println("RGB:", red(this.centroids[i]), green(this.centroids[i]), blue(this.centroids[i]));
     }
   }
   

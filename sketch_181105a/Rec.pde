@@ -24,7 +24,10 @@ class Rec{
   {
       rect(this.x, this.y, this.w, this.h);
   }
-  
+  public void printRec()
+  {
+      println("rec:", this.x, this.y, this.w, this.h);
+  }  
   public void update(int x, int y, int w, int h)
   {
     this.x = x;

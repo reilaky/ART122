@@ -54,7 +54,8 @@ void slidingWindow(int row, int col, int sw)
   {
     int loc = row + i + col * width;
     //output.print("(" + (row + i) + "," + col + "): ");
-    color c = snapshot.pixels[loc];
+    //color c = snapshot.pixels[loc];
+    color c = video.pixels[loc];
     int res = centroids.inRange(c);
     //output.print(res +" ");
     if(res != -1)
@@ -76,7 +77,8 @@ void slidingWindow(int row, int col, int sw)
     // update the current first row result for later sliding
     int loc = row + i + (col - sw + 1) * width;
     //output.print("(" + (row + i) + "," + (col - sw + 1) + "): ");
-    int c = snapshot.pixels[loc];
+    //color c = snapshot.pixels[loc];
+    color c = video.pixels[loc];
     int res = centroids.inRange(c);
     //output.print(res + " ");
     if(res != -1)
@@ -93,6 +95,7 @@ void slidingWindow(int row, int col, int sw)
   //output.println("");
 }
 
+// initialize
 void slidingWindow(int sw, int row)
 {
   //output.println("initialization");
@@ -109,7 +112,8 @@ void slidingWindow(int sw, int row)
     {
       int loc = i + j * width;
       //output.print("(" + i + "," + j + "): ");
-      color c = snapshot.pixels[loc];
+      //color c = snapshot.pixels[loc];
+      color c = video.pixels[loc];
       int res = centroids.inRange(c);
       //output.print(res + " ");
       if(res != -1)

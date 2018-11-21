@@ -6,17 +6,17 @@ import processing.video.*;
 
 PImage img;
 Capture video;
-PImage snapshot;
+//PImage snapshot;
 //PeasyCam cam;
 color[] rawColor;
 Centroids centroids;
 int k = 2;
 int numPixel;
 int KmeansItr = 3;
-int slidingWindowMin = 20;
+int slidingWindowMin = 50;
 int slidingWindowMax = 100;
-int hueRange = 15;
-int range = 50;
+int hueRange = 20;
+int range = 100;
 float threshold = 0.6;
 float[] maxRatio;
 int[] prev;
@@ -27,20 +27,20 @@ boolean p = true;
 //PrintWriter output;
 void setup() {
   //output = createWriter("positions.txt"); 
-  //frameRate(5);
+  frameRate(10);
   size(320, 240, P3D);
   //cam = new PeasyCam(this, 100);
   //cam.setMinimumDistance(50);
   //cam.setMaximumDistance(5000);
-  //video = new Capture(this, width, height);
-  //video.start();
-  img = loadImage("3.png");
+  video = new Capture(this, width, height);
+  video.start();
+  img = loadImage("1.jpg");
   img.resize(width, height);
   img.loadPixels();
   
-  snapshot = loadImage("1.jpg");
-  snapshot.resize(width, height);
-  snapshot.loadPixels();
+  //snapshot = loadImage("1.jpg");
+  //snapshot.resize(width, height);
+  //snapshot.loadPixels();
   
   rawColor = new color[width * height];
   numPixel = width * height;
@@ -77,34 +77,37 @@ void setup() {
     hsv[i][0] = hue(centroids.centroids[i]);
     hsv[i][1] = saturation(centroids.centroids[i]);
     hsv[i][2] = brightness(centroids.centroids[i]);
-    println(hsv[i][0], hsv[i][1], hsv[i][2]);
+    println("hsv:", hsv[i][0], hsv[i][1], hsv[i][2]);
   }
-  int m1 = millis();
-  colorDetection();
-  println("time:", (millis() - m1)/1000.0);
-  println("maxRatio");
-  for (int i = 0; i < k; i++)
-  {
-    print(maxRatio[i] + " ");
-  }
+  //int m1 = millis();
+  ////colorDetection();
+  //println("time:", (millis() - m1)/1000.0);
+  //print("maxRatio: ");
+  //for (int i = 0; i < k; i++)
+  //{
+  //  print(maxRatio[i] + " ");
+  //}
+  //println();
 }
 
 void draw() {
 
   background(0);
   //visualizeKmeans();
-   image(snapshot, 0, 0);
-  //if(millis() % 3000 == 0)
-  //{
-  //  video.loadPixels();
-  //  colorDetection();
-  //}
+  //image(snapshot, 0, 0);
+  image(video, 0, 0);
+  if(millis() % 1 == 0)
+  {
+    video.loadPixels();
+    colorDetection();
+  }
   strokeWeight(2);
   noFill();
   for (int i = 0; i < k; i++)
   {
     stroke(centroids.centroids[i]);
     rect(contours[i].x, contours[i].y, contours[i].w, contours[i].h);
+    //contours[i].printRec();
   }
   for (int i = 0; i < k; i++)
   {
@@ -112,15 +115,24 @@ void draw() {
     fill(centroids.centroids[i]);
     rect(i * 10 + width/2, 0 + height/2, 10, 10);
   }
+  print("maxRatio: ");
+  for (int i = 0; i < k; i++)
+  {
+    print(maxRatio[i] + " ");
+    // clear up maxRatio and contours for later use
+    maxRatio[i] = 0;
+    contours[i].update(0, 0, 0, 0);
+  }
+  println();
 
 }
 
-//void captureEvent(Capture video)
-//{
-//  if (video.available()) {
-//    video.read();
-//  }
-//}
+void captureEvent(Capture video)
+{
+  if (video.available()) {
+    video.read();
+  }
+}
 
 void visualizeKmeans()
 {
