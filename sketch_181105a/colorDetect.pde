@@ -7,7 +7,7 @@ void colorDetection()
     //output.println("sw = " + sw);
     int area = sw * sw;
     // sliding
-    for(int i = 0; i < width - sw; i++)
+    for(int i = 0; i < height - sw; i++)
     {
       // initial the first sliding window
       //output.println("-------------------------------------------------------------------------------------------------");
@@ -17,14 +17,14 @@ void colorDetection()
       {
         contours[domainIndex].update(0, 0, sw, sw);
       }
-      for(int j = sw; j < height; j++)
+      for(int j = sw; j < width; j++)
       {
         slidingWindow(i, j, sw);
         domainIndex = hasDomainColor(area);
         // always update to the largest area.
         if(domainIndex != -1 && contours[domainIndex].w * contours[domainIndex].h <= area)
         {
-          contours[domainIndex].update(i, j, sw, sw);
+          contours[domainIndex].update(j, i, sw, sw);
         }
       }
     }
@@ -52,7 +52,8 @@ void slidingWindow(int row, int col, int sw)
   // only update the new column
   for(int i = 0; i < sw; i++)
   {
-    int loc = row + i + col * width;
+    //println("row", row, "col", col, "sw", sw);
+    int loc = col + (i + row) * width;
     //output.print("(" + (row + i) + "," + col + "): ");
     //color c = snapshot.pixels[loc];
     color c = video.pixels[loc];
@@ -75,7 +76,7 @@ void slidingWindow(int row, int col, int sw)
   for(int i = 0; i < sw; i++)
   {
     // update the current first row result for later sliding
-    int loc = row + i + (col - sw + 1) * width;
+    int loc = col - sw + (row + i) * width;
     //output.print("(" + (row + i) + "," + (col - sw + 1) + "): ");
     //color c = snapshot.pixels[loc];
     color c = video.pixels[loc];
@@ -106,11 +107,11 @@ void slidingWindow(int sw, int row)
     currSum[i] = 0;
     prev[i] = 0;
   }
-  for(int i = row; i < sw + row; i++)
+  for(int i = 0; i < sw; i++)
   {
     for(int j = 0; j < sw; j++)
     {
-      int loc = i + j * width;
+      int loc = i + (j + row) * width;
       //output.print("(" + i + "," + j + "): ");
       //color c = snapshot.pixels[loc];
       color c = video.pixels[loc];
